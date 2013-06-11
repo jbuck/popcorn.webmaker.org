@@ -17,9 +17,9 @@
     <meta property="og:site_name" content="Mozilla Webmaker">
 
     <title>{{projectName}} - Popcorn Maker</title>
-    <link rel="stylesheet" href="{{baseHref}}/css/makedetails.css">
-    <link rel="stylesheet" href="{{baseHref}}/css/embed-shell.css">
-    <script src="{{makeEndpoint}}/js/make-api.js"></script>
+    <link rel="stylesheet" href="{{config.app_hostname}}/css/makedetails.css">
+    <link rel="stylesheet" href="{{config.app_hostname}}/css/embed-shell.css">
+    <script src="{{config.make_endpoint}}/js/make-api.js"></script>
     {% include "googleanalytics.html" %}
   </head>
   <body>
@@ -35,17 +35,17 @@
             <div class="make-made-by"><a href="#"><img class="make-user-gravatar" src="http://fillmurray.com/35/35" alt="USER NAME"></a>
               <div class="made-by">Made by <a href="#">PLACEHOLDER</a><span class="make-relative-date">PLACEHOLDER</span></div>
             </div>
-            <div class="make-tools-languages"><span class="built-with">Built with</span><a href="//popcorn.webmaker.org"><img src="{{baseHref}}/resources/icons/icon-Popcorn.png" alt="WEBMAKER TOOL"><span class="tool-name">Popcorn</span></a><span class="languages">Languages</span>
+            <div class="make-tools-languages"><span class="built-with">Built with</span><a href="//popcorn.webmaker.org"><img src="{{config.app_hostname}}/resources/icons/icon-Popcorn.png" alt="WEBMAKER TOOL"><span class="tool-name">Popcorn</span></a><span class="languages">Languages</span>
             </div>
             <p class="make-desc">{{description}}</p>
           </div>
         </div>
       </div>
       <div class="make-bar">
-        <div class="wrapper"><span class="logospan"><a href="#"><img src="{{baseHref}}/resources/img/logo_small.png" alt="Mozilla Webmaker"></a><span class="made-with">Made with<a href="//webmaker.org"> Webmaker</a></span></span><span class="expand-collapse">Details<img src="{{baseHref}}/resources/icons/icon-arrow-down.png"></span>
+        <div class="wrapper"><span class="logospan"><a href="#"><img src="{{config.app_hostname}}/resources/img/logo_small.png" alt="Mozilla Webmaker"></a><span class="made-with">Made with<a href="//webmaker.org"> Webmaker</a></span></span><span class="expand-collapse">Details<img src="{{config.app_hostname}}/resources/icons/icon-arrow-down.png"></span>
           <div class="make-social">
             <ul>
-              <li class="button"><a href="{{remixUrl}}" target="_blank" class="button-remix"><span>Remix</span></a></li>
+              <li class="button"><a href="{{config.app_hostname}}{{remixUrl}}" target="_blank" class="button-remix"><span>Remix</span></a></li>
             </ul><span class="clear"></span>
           </div>
         </div>
@@ -56,7 +56,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {
-        var img_path = "{{baseHref}}/resources/icons/",
+        var img_path = "{{config.app_hostname}}/resources/icons/",
             img_up = "icon-arrow-up.png",
             img_down = "icon-arrow-down.png",
             animationSpeed = 200,
@@ -82,7 +82,7 @@
         $toggle.on("click", toggleNav);
       });
       var client = Make({
-            apiURL: "{{makeEndpoint}}"
+            apiURL: "{{config.make_endpoint}}"
           }),
           remixedFrom,
           locales = [];
