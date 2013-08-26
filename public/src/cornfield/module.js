@@ -2,39 +2,58 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "util/xhr", "sso-include" ], function( xhr ) {
+define( [ "util/xhr" ], function( xhr ) {
 
   var Cornfield = function( butter ) {
 
     var authenticated = false,
+        loggedInUser = document.querySelector( "meta[name=persona-email]" ).value,
         username = "",
         self = this;
 
-    navigator.idSSO.app = {
-      onlogin: function( webmakerEmail, webmakerUserName ) {
-        function finishCallback() {
-          authenticated = true;
-          username = webmakerUserName;
-          butter.dispatch( "authenticated" );
-        }
-        if ( butter.project.id ) {
-          xhr.get( "/api/project/" + butter.project.id, function( res ) {
-            if ( res.status !== 404 ) {
-              return finishCallback();
-            }
+    navigator.id.watch({
+      loggedInUser: loggedInUser ? loggedInUser : null,
+      realm: document.querySelector( "meta[name=sso-realm]" ).value,
+      onlogin: function(assertion) {
+        console.log("onlogin fired");
 
-            // They didn't own the project. Use the logic we have to force remixes on butter load.
-            window.location.reload();
-          });
-        } else {
-          finishCallback();
-        }
+        xhr.post( "/persona/verify", { assertion: assertion }, function( res ) {
+          console.log("logged in");
+
+          authenticated = true;
+          username = res.user.username;
+          butter.dispatch( "authenticated" );
+        });
       },
       onlogout: function() {
-        authenticated = false;
-        butter.dispatch( "logout" );
-      }
-    };
+        console.log("onlogout fired");
+
+        xhr.post( "/persona/logout", function() {
+          console.log("logged out");
+
+          authenticated = false;
+          username = "";
+          butter.dispatch( "logout" );
+        });
+      },
+      onmatch: function() {
+        console.log("onmatch fired");
+
+        if ( document.querySelector( "meta[name=persona-email]" ).value) {
+          console.log("logged in");
+
+          authenticated = true;
+          username = res.user.username;
+          butter.dispatch( "authenticated" );
+        } else {
+          console.log("logged out");
+
+          authenticated = false;
+          username = "";
+          butter.dispatch( "logout" );
+        }
+      },
+    });
 
     this.username = function() {
       return username;

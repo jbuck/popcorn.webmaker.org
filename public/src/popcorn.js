@@ -37,8 +37,7 @@ requirejs.config({
     "l10n": "../external/require/l10n",
 
     // Our other APIs
-    "make-api": "../external/make-api",
-    "sso-include": "../external/sso-include"
+    "make-api": "../external/make-api"
   },
   // shim config defines dependencies between non-AMD modules, which is all of the Popcorn code
   shim: {

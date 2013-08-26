@@ -35,6 +35,7 @@ app.locals({
     ga_account: config.GA_ACCOUNT,
     ga_domain: config.GA_DOMAIN,
     make_endpoint: config.MAKE_ENDPOINT,
+    ssoRealm: config.SSO_REALM,
     user_bar: config.USER_BAR
   }
 });
@@ -69,8 +70,7 @@ app.configure( function() {
           include: [ "butter" ],
           mainConfigFile: WWW_ROOT + "/src/popcorn.js",
           paths: {
-            "make-api": path.resolve( __dirname, "node_modules/makeapi-client/src/make-api" ),
-            "sso-include": path.resolve( __dirname, "node_modules/webmaker-sso/include" )
+            "make-api": path.resolve( __dirname, "node_modules/makeapi-client/src/make-api" )
           }
         },
         "/src/embed.js": {
@@ -175,9 +175,6 @@ app.get( '/templates/basic/index.html', routes.pages.editor );
 
 app.get( '/external/make-api.js', function( req, res ) {
   res.sendfile( path.resolve( __dirname, "node_modules/makeapi-client/src/make-api.js" ) );
-});
-app.get( '/external/sso-include.js', function( req, res ) {
-  res.sendfile( path.resolve( __dirname, "node_modules/webmaker-sso/include.js" ) );
 });
 
 // Project Endpoints
